@@ -31,14 +31,8 @@
 }
 
 /* For data picker */
-/* .rdp {
-  --rdp-cell-size: 32px !important;
-  --rdp-accent-color: theme("colors.accent.500") !important;
-  --rdp-background-color: theme("colors.accent.600") !important;
-  margin: 0 !important;
-} */
-
 .rdp-root {
+  --rdp-cell-size: 32px !important;
   --rdp-day-height: 2rem !important; /* The height of the day cells. */
   --rdp-day-width: 2rem !important; /* The width of the day cells. */
   --rdp-day_button-height: 2rem !important;

@@ -3,13 +3,14 @@ import { differenceInDays, isPast, isSameDay, isWithinInterval } from "date-fns"
 import { DayPicker } from "react-day-picker";
 import "react-day-picker/dist/style.css";
 import { useReservation } from "./ReservationContext";
+import { useEffect } from "react";
 
 function isAlreadyBooked(range, datesArr) {
   return (
-    range.from &&
+    range?.from &&
     range.to &&
     datesArr.some((date) =>
-      isWithinInterval(date, { start: range.from, end: range.to })
+      isWithinInterval(date, { start: range?.from, end: range?.to })
     )
   );
 }
@@ -18,14 +19,20 @@ function DateSelector({ cabin, settings, bookedDates }) {
   // custom hook from managing state with contextAPI
   const { range, setRange, resetRange } = useReservation();
   // 如果选定日期内包含bookedDates，reset the range
-  const displayRange = isAlreadyBooked(range, bookedDates) ? {} : range
+  useEffect(() => {
+    if (isAlreadyBooked(range, bookedDates)) {
+      resetRange();
+    }
+  }, [range, bookedDates, resetRange]);
+  // const displayRange = isAlreadyBooked(range, bookedDates) ? {} : range
 
   const { regularPrice, discount } = cabin;
-  const numNights = differenceInDays(displayRange.to, range.from);
+  const numNights = range?.to ? differenceInDays(range.to, range.from) : 0;
   const cabinPrice = numNights * (regularPrice - discount)
 
   // SETTINGS
   const { minBookingLength, maxBookingLength } = settings;
+
 
   return (
     <div className="flex flex-col justify-between">
@@ -33,7 +40,7 @@ function DateSelector({ cabin, settings, bookedDates }) {
         className="pt-12 place-self-center"
         mode="range"
         onSelect={setRange}
-        selected={displayRange}
+        selected={range}
         min={minBookingLength + 1}
         max={maxBookingLength}
         fromMonth={new Date()}
@@ -72,7 +79,7 @@ function DateSelector({ cabin, settings, bookedDates }) {
           ) : null}
         </div>
 
-        {range.from || range.to ? (
+        {range?.from || range?.to ? (
           <button
             className="border border-primary-800 py-2 px-4 text-sm font-semibold"
             onClick={resetRange}

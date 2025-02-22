@@ -32,6 +32,7 @@ export async function updateGuest(formData) {
 export async function deleteBooking(bookingId) {
     // check if user is authenticated
     const session = await auth();
+    console.log(session)
     if (!session) throw new Error("You must be logged in");
     // 只允许客人删除自己guestId下的bookingId (防止有人使用浏览器之外的手段删除其他用户的bookings)
     const guestBookings = await getBookings(session.user.guestId);

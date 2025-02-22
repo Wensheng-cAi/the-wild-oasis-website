@@ -4,8 +4,6 @@ import { Suspense } from "react";
 import Spinner from "@/app/_components/Spinner";
 import Cabin from '@/app/_components/Cabin'
 
-
-
 // 动态生成metadata
 export async function generateMetadata({ params }) {
     const { name } = await getCabin(params.cabinId);
